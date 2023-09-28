@@ -1,0 +1,26 @@
+---
+- name: Show env
+  hosts: "windowsserver.company.com"
+  gather_facts: false
+  become: false
+  collections:
+    - community.general
+    - community.windows
+
+  pre_tasks:
+    - name: set ansible user
+      set_fact:
+        ansible_user: 'myuser@DOMAIN.COMPANY'
+
+  tasks:
+    - name: Run ps module
+      my_ps_module:
+        message_1: "hello"
+        message_2: "world"
+        my_fp: "D:\\Scripts\\test_awx_powershell"
+      register: result_my_ps_module
+
+    - name: print results
+      debug:
+        msg:
+          - "{{ result_my_ps_module }}"
